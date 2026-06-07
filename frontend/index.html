@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCPP Power Output Predictor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-icon">⚡</div>
+          <div>
+            <h1>Combined Cycle Power Plant</h1>
+            <p>Full Load Electrical Power Output Prediction</p>
+          </div>
+        </div>
+        <div class="header-meta">
+          <span class="badge" id="status-badge">Loading...</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="card predict-card">
+        <h2>Predict Power Output</h2>
+        <p class="subtitle">Enter ambient sensor readings to estimate net hourly electrical energy output (PE).</p>
+
+        <form id="predict-form" class="predict-form">
+          <div class="form-grid">
+            <label>
+              <span>Ambient Temperature (AT)</span>
+              <small>°C — range 1.81 to 37.11</small>
+              <input type="number" name="AT" step="0.01" value="19.65" required />
+            </label>
+            <label>
+              <span>Exhaust Vacuum (V)</span>
+              <small>cm Hg — range 25.36 to 81.56</small>
+              <input type="number" name="V" step="0.01" value="54.31" required />
+            </label>
+            <label>
+              <span>Atmospheric Pressure (AP)</span>
+              <small>mbar — range 992.89 to 1033.30</small>
+              <input type="number" name="AP" step="0.01" value="1013.26" required />
+            </label>
+            <label>
+              <span>Relative Humidity (RH)</span>
+              <small>% — range 25.56 to 100.16</small>
+              <input type="number" name="RH" step="0.01" value="73.31" required />
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label class="model-select">
+              <span>Model</span>
+              <select name="model" id="model-select">
+                <option value="">Best model (auto)</option>
+              </select>
+            </label>
+            <button type="submit" class="btn-primary">Predict</button>
+          </div>
+        </form>
+
+        <div id="prediction-result" class="prediction-result hidden">
+          <div class="result-label">Predicted Electrical Power Output</div>
+          <div class="result-value"><span id="pe-value">—</span> <span class="unit">MW</span></div>
+          <div class="result-model">Model: <span id="model-used">—</span></div>
+        </div>
+      </section>
+
+      <section class="card metrics-card">
+        <h2>Model Performance</h2>
+        <p class="subtitle">Trained on Sheet1–3, evaluated on Sheet4–5 (UCI CCPP dataset).</p>
+        <div id="metrics-summary" class="metrics-summary"></div>
+        <div class="table-wrap">
+          <table id="metrics-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>MAE (MW)</th>
+                <th>RMSE (MW)</th>
+                <th>R²</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card figures-card">
+        <h2>Model Results (Figures)</h2>
+        <p class="subtitle">Visual analysis required for project submission.</p>
+        <div id="figures-grid" class="figures-grid"></div>
+      </section>
+
+      <section class="card info-card">
+        <h2>About This Project</h2>
+        <div class="info-grid">
+          <div>
+            <h3>Input Features</h3>
+            <ul>
+              <li><strong>AT</strong> — Ambient temperature affecting gas turbine performance</li>
+              <li><strong>V</strong> — Exhaust vacuum affecting steam turbine efficiency</li>
+              <li><strong>AP</strong> — Atmospheric pressure (inlet air density)</li>
+              <li><strong>RH</strong> — Relative humidity</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Methodology</h3>
+            <ul>
+              <li>Linear Regression (as per research paper Eq. 2)</li>
+              <li>Ridge Regression & Random Forest for comparison</li>
+              <li>MAE and RMSE evaluation metrics</li>
+              <li>Based on Tüfekci (2014) — IJEPE&S</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>UCI Combined Cycle Power Plant Dataset · Machine Learning Project</p>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
