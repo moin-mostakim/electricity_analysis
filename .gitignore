@@ -3,5 +3,4 @@ __pycache__/
 *.pyc
 .DS_Store
 CCPP_data.zip
-backend/saved_models/
-backend/figures/
+
